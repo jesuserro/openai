@@ -1,9 +1,12 @@
 <?php
 require_once 'vendor/autoload.php';
 
-$yourApiKey = 'YOUR_API_TOKEN';  
+$apiKey = getenv('OPENAI_API_KEY');
+if (!$apiKey) {
+    die('API Key no configurada. Asegúrate de que la variable de entorno OPENAI_API_KEY está establecida.');
+}
 
-$client = OpenAI::client($yourApiKey);
+$client = OpenAI::client($apiKey);
 
 $result = $client->chat()->create([
     'model' => 'gpt-4',
