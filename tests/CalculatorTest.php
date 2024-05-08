@@ -2,7 +2,7 @@
 
 class CalculatorTest extends PHPUnit\Framework\TestCase
 {
-    public function testAddNumbers()
+    public function testAddNumbers(): void
     {
         $calculator = new Calculator();
         $sum = $calculator->add(5, 3);
@@ -13,7 +13,7 @@ class CalculatorTest extends PHPUnit\Framework\TestCase
 
 class Calculator
 {
-    public function add($number1, $number2)
+    public function add(int $number1, int $number2): int
     {
         return $number1 + $number2;
     }
