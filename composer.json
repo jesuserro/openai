@@ -61,9 +61,9 @@
         "lint": "pint -v",
         "refactor": "rector --debug",
         "test:lint": "pint --test -v",
-        "test:refactor": "rector --dry-run",
+        "test:refactor": "rector process --dry-run",
         "test:types": "phpstan analyse --ansi",
-        "test:type-coverage": "pest --type-coverage --min=100",
+        "test:type-coverage": "php -d memory_limit=256M vendor/bin/pest --type-coverage --min=100",
         "test:unit": "pest --colors=always",
         "test": [
             "@test:lint",
