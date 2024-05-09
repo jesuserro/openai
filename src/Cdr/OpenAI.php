@@ -2,11 +2,11 @@
 
 namespace Cdr;
 
-use OpenAI\Client as OpenAIClient;  
+use OpenAI\Client as OpenAIClient;
 
 class OpenAI
 {
-    private OpenAIClient $client; 
+    private OpenAIClient $client;
 
     public function __construct(string $apiKey)
     {
