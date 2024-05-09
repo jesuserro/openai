@@ -14,4 +14,12 @@ class CalculatorTest extends TestCase
 
         $this->assertEquals(8, $sum);
     }
+
+    public function testMultiplyNumbers(): void
+    {
+        $calculator = new Calculator();
+        $sum = $calculator->multiply(5, 3);
+
+        $this->assertEquals(15, $sum);
+    }
 }
