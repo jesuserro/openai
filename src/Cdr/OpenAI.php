@@ -2,11 +2,11 @@
 
 namespace Cdr;
 
-use OpenAI\Client as OpenAIClient;  // Asegúrate de que este use statement esté apuntando al correcto OpenAI\Client que estás utilizando.
+use OpenAI\Client as OpenAIClient;  
 
 class OpenAI
 {
-    private OpenAIClient $client;  // Esta línea ahora correctamente define el tipo.
+    private OpenAIClient $client; 
 
     public function __construct(string $apiKey)
     {
@@ -22,6 +22,6 @@ class OpenAI
             ],
         ]);
 
-        return $result->choices[0]->message->content;
+        return $result->choices[0]->message->content; // Hello! How can I assist you today?
     }
 }
