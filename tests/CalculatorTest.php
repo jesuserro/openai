@@ -1,6 +1,9 @@
 <?php
 
-class CalculatorTest extends PHPUnit\Framework\TestCase
+use App\Calculator;
+use PHPUnit\Framework\TestCase;
+
+class CalculatorTest extends TestCase
 {
     public function testAddNumbers(): void
     {
@@ -8,13 +11,5 @@ class CalculatorTest extends PHPUnit\Framework\TestCase
         $sum = $calculator->add(5, 3);
 
         $this->assertEquals(8, $sum);
-    }
-}
-
-class Calculator
-{
-    public function add(int $number1, int $number2): int
-    {
-        return $number1 + $number2;
     }
 }
