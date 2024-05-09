@@ -1,6 +1,8 @@
 <?php
 
-use App\Calculator;
+namespace Tests\Cdr;
+
+use Cdr\Calculator;
 use PHPUnit\Framework\TestCase;
 
 class CalculatorTest extends TestCase

@@ -37,7 +37,7 @@
     "autoload": {
         "psr-4": {
             "OpenAI\\": "src/",
-            "App\\": "src/"
+            "Cdr\\": "src/Cdr/"
         },
         "files": [
             "src/OpenAI.php"
@@ -45,7 +45,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Tests\\Cdr\\": "tests/Cdr/"
         }
     },
     "minimum-stability": "dev",
