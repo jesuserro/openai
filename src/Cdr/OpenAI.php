@@ -6,7 +6,7 @@ use OpenAI\Client as OpenAIClient;
 
 class OpenAI
 {
-    private OpenAIClient $client;
+    private readonly OpenAIClient $client;
 
     public function __construct(string $apiKey)
     {
