@@ -15,7 +15,7 @@ test('sayHello returns correct response', function () {
         public function create(array $config) {
             return (object) [
                 'choices' => [
-                    (object) ['message' => (object) ['content' => $config['messages'][0]['content'] . " How can I assist you today?"]]
+                    (object) ['message' => (object) ['content' => $config['messages'][0]['content'] . ' How can I assist you today?']]
                 ]
             ];
         }

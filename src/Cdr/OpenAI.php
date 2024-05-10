@@ -17,6 +17,6 @@ class OpenAI {
             ],
         ]);
 
-        return $result->choices[0]->message->content;
+        return $result->choices[0]->message->content; // Hello! How can I assist you today?
     }
 }
