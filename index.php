@@ -14,6 +14,7 @@ try {
     $client = new ClientWrapper($apiKey);
     $openAIService  = new OpenAIService($client);
     echo $openAIService ->sayHello() . PHP_EOL;
+    echo $openAIService ->sayPaymentMethodsInCentraldereservas() . PHP_EOL;
 } catch (\Exception $e) {
     echo 'Error: ' . $e->getMessage();
 }
