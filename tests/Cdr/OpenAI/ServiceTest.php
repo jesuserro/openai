@@ -1,43 +1,32 @@
 <?php
 
 use Cdr\OpenAI\Service as OpenAIService;
-use Cdr\OpenAI\ClientInterface;
+use Cdr\OpenAI\ClientWrapper;
 use PHPUnit\Framework\TestCase;
 
 class OpenAIServiceTest extends TestCase {
-    public function createMockChat(array $messages): object {
-        return new class($messages) {
-            private $messages;
-            public function __construct(array $messages) {
-                $this->messages = $messages;
-            }
-            public function create(array $config) {
-                return (object) [
-                    'choices' => [
-                        (object) ['message' => (object) ['content' => $config['messages'][0]['content'] . ' How can I assist you today?']]
-                    ]
-                ];
-            }
-        };
+    public function setUpOpenAIService(): OpenAIService {
+        $apiKey = getenv('OPENAI_API_KEY');
+        if (!$apiKey) {
+            $this->fail('API Key no configurada. Asegúrate de que la variable de entorno OPENAI_API_KEY está establecida.');
+        }
+        $client = new ClientWrapper($apiKey);
+        return new OpenAIService($client);
     }
 
-    public function setUpOpenAIServiceWithMock(array $messages): OpenAIService {
-        $mockClient = $this->createMock(ClientInterface::class);
-        $mockChat = $this->createMockChat($messages);
-    
-        $mockClient->method('chat')->willReturn($mockChat);
-        return new OpenAIService($mockClient);
+    public function testSayHelloReturnsExpectedResponse() {
+        $openAIService = $this->setUpOpenAIService();
+        
+        $response = $openAIService->sayHello(); // Hello! How can I assist you today?
+        
+        $this->assertStringContainsString('Hello!', $response, 'La respuesta debería contener \'Hello!\'.');
     }
 
-    public function testSayHelloReturnsCorrectResponse() {
+    public function testSayCapitalDeEspaña() {
+        $openAIService = $this->setUpOpenAIService();
         
-        $messages = [
-            ['role' => 'user', 'content' => 'Hello!']
-        ];
-        $expectedResponse = 'Hello! How can I assist you today?';
+        $response = $openAIService->sayCapitalDeEspaña(); // La capital de España es Madrid.
         
-        $openAIService = $this->setUpOpenAIServiceWithMock($messages);
-    
-        $this->assertEquals($expectedResponse, $openAIService->sayHello());
+        $this->assertStringContainsString('Madrid', $response, 'La respuesta debería contener \'Madrid\'.');
     }
 }

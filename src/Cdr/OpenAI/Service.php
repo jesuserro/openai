@@ -19,4 +19,15 @@ class Service {
 
         return $result->choices[0]->message->content; // Hello! How can I assist you today?
     }
+
+    public function sayCapitalDeEspaña(): string {
+        $result = $this->client->chat()->create([
+            'model' => 'gpt-4',
+            'messages' => [
+                ['role' => 'user', 'content' => '¿Cuál es la capital de España?'],
+            ],
+        ]);
+
+        return $result->choices[0]->message->content; // Madrid
+    }
 }
