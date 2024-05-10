@@ -20,9 +20,24 @@ class OpenAIServiceTest extends TestCase {
         $response = $openAIService->sayCapitalDeEspaña(); // La capital de España es Madrid.
         
         $this->assertStringContainsString('Madrid', $response, 'La respuesta debería contener \'Madrid\'.');
+        
+    }
 
-        // If pass the test, call new function to create PDF with text saying the capital of Spain is Madrid
-        // $this->createPDF();
+    public function testSayElementoQuimicoLetraO() {
+        $openAIService = $this->setUpOpenAIService();
+        
+        $response = $openAIService->sayElementoQuimicoOxigeno(); // La capital de España es Madrid.
+        
+        $this->assertStringContainsString('Oxígeno', $response, 'La respuesta debería contener \'Oxígeno\'.');
+        
+    }
+
+    public function testSayPlanetaMasGrandeDelSistemaSolar() {
+        $openAIService = $this->setUpOpenAIService();
+        
+        $response = $openAIService->sayPlanetaMasGrandeDelSistemaSolar(); // Júpiter.
+        
+        $this->assertStringContainsString('Júpiter', $response, 'La respuesta debería contener \'Júpiter\'.');
         
     }
 
@@ -32,9 +47,6 @@ class OpenAIServiceTest extends TestCase {
         $response = $openAIService->sayColorDelCieloEnLaTierra(); // El cielo en el planeta Tierra es generalmente de color azul durante un día despejado. Sin embargo, puede variar en otras condiciones, como al amanecer o al atardecer cuando puede aparecer en tonos de rojo, naranja, rosa o púrpura.
         
         $this->assertStringContainsString('azul', $response, 'La respuesta debería contener \'azul\'.');
-
-        // If pass the test, save the response in database
-        // $this->saveResponseInDatabase($response);
         
     }
 
@@ -58,9 +70,12 @@ class OpenAIServiceTest extends TestCase {
             Recuerda que los métodos de pago pueden variar en función al país y al hotel. Antes de realizar una reserva, asegúrate de comprobar los métodos de pago disponibles.
             */
         
-        $this->assertStringContainsString('Tarjeta de crédito', $response, 'La respuesta debería contener \'tarjeta de crédito\'.');
+        $this->assertStringContainsString('Transferencia', $response, 'La respuesta debería contener \'Transferencia\'.');
         $this->assertStringContainsString('PayPal', $response, 'La respuesta debería contener \'PayPal\'.');
         // $this->assertStringContainsString('efectivo', $response, 'La respuesta debería contener \'efectivo\'.');
+
+        // If pass the test, save the response in database
+        // $this->saveResponseInDatabase($response);
         
     }
 

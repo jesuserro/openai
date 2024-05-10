@@ -31,6 +31,28 @@ class Service {
         return $result->choices[0]->message->content; // La capital de España es Madrid.
     }
 
+    public function sayElementoQuimicoOxigeno(): string {
+        $result = $this->client->chat()->create([
+            'model' => 'gpt-4',
+            'messages' => [
+                ['role' => 'user', 'content' => '¿Cuál es el elemento químico con símbolo O?'],
+            ],
+        ]);
+
+        return $result->choices[0]->message->content; 
+    }
+
+    public function sayPlanetaMasGrandeDelSistemaSolar(): string {
+        $result = $this->client->chat()->create([
+            'model' => 'gpt-4',
+            'messages' => [
+                ['role' => 'user', 'content' => '¿Cuál es el planeta más grande del sistema solar?'],
+            ],
+        ]);
+
+        return $result->choices[0]->message->content; 
+    }
+
     public function sayColorDelCieloEnLaTierra(): string {
         $result = $this->client->chat()->create([
             'model' => 'gpt-4',
