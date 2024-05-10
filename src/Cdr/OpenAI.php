@@ -2,19 +2,14 @@
 
 namespace Cdr;
 
-use OpenAI\Client as OpenAIClient;
+class OpenAI {
+    private readonly OpenAIClientInterface $client;
 
-class OpenAI
-{
-    private readonly OpenAIClient $client;
-
-    public function __construct(string $apiKey)
-    {
-        $this->client = \OpenAI::client($apiKey);
+    public function __construct(OpenAIClientInterface $client) {
+        $this->client = $client;
     }
 
-    public function sayHello(): string
-    {
+    public function sayHello(): string {
         $result = $this->client->chat()->create([
             'model' => 'gpt-4',
             'messages' => [
@@ -22,6 +17,6 @@ class OpenAI
             ],
         ]);
 
-        return $result->choices[0]->message->content; // Hello! How can I assist you today?
+        return $result->choices[0]->message->content;
     }
 }
