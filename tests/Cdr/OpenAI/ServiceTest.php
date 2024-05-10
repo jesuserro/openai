@@ -4,27 +4,40 @@ use Cdr\OpenAI\Service as OpenAIService;
 use Cdr\OpenAI\ClientInterface;
 use PHPUnit\Framework\TestCase;
 
-uses(TestCase::class);
+class OpenAIServiceTest extends TestCase {
+    public function createMockChat(array $messages): object {
+        return new class($messages) {
+            private $messages;
+            public function __construct(array $messages) {
+                $this->messages = $messages;
+            }
+            public function create(array $config) {
+                return (object) [
+                    'choices' => [
+                        (object) ['message' => (object) ['content' => $config['messages'][0]['content'] . ' How can I assist you today?']]
+                    ]
+                ];
+            }
+        };
+    }
 
-test('sayHello returns correct response', function () {
-    $expectedResponse = 'Hello! How can I assist you today?';
-    $mockClient = $this->createMock(ClientInterface::class);
+    public function setUpOpenAIServiceWithMock(array $messages): OpenAIService {
+        $mockClient = $this->createMock(ClientInterface::class);
+        $mockChat = $this->createMockChat($messages);
+    
+        $mockClient->method('chat')->willReturn($mockChat);
+        return new OpenAIService($mockClient);
+    }
 
-    // Creamos un objeto mock que puede tener métodos adicionales
-    $mockChat = new class {
-        public function create(array $config) {
-            return (object) [
-                'choices' => [
-                    (object) ['message' => (object) ['content' => $config['messages'][0]['content'] . ' How can I assist you today?']]
-                ]
-            ];
-        }
-    };
-
-    // Configuramos el método chat para que devuelva nuestro mockChat
-    $mockClient->method('chat')->willReturn($mockChat);
-
-    $openAIService = new OpenAIService($mockClient);
-
-    expect($openAIService->sayHello())->toBe($expectedResponse);
-});
+    public function testSayHelloReturnsCorrectResponse() {
+        
+        $messages = [
+            ['role' => 'user', 'content' => 'Hello!']
+        ];
+        $expectedResponse = 'Hello! How can I assist you today?';
+        
+        $openAIService = $this->setUpOpenAIServiceWithMock($messages);
+    
+        $this->assertEquals($expectedResponse, $openAIService->sayHello());
+    }
+}
