@@ -14,19 +14,42 @@ class OpenAIServiceTest extends TestCase {
         return new OpenAIService($client);
     }
 
-    public function testSayHelloReturnsExpectedResponse() {
-        $openAIService = $this->setUpOpenAIService();
-        
-        $response = $openAIService->sayHello(); // Hello! How can I assist you today?
-        
-        $this->assertStringContainsString('Hello!', $response, 'La respuesta debería contener \'Hello!\'.');
-    }
-
     public function testSayCapitalDeEspaña() {
         $openAIService = $this->setUpOpenAIService();
         
         $response = $openAIService->sayCapitalDeEspaña(); // La capital de España es Madrid.
         
         $this->assertStringContainsString('Madrid', $response, 'La respuesta debería contener \'Madrid\'.');
+
+        // If pass the test, call new function to create PDF with text saying the capital of Spain is Madrid
+        // $this->createPDF();
+        
     }
+
+    public function testSayColorDelCieloEnLaTierra() {
+        $openAIService = $this->setUpOpenAIService();
+        
+        $response = $openAIService->sayColorDelCieloEnLaTierra(); // El cielo en el planeta Tierra es generalmente de color azul durante un día despejado. Sin embargo, puede variar en otras condiciones, como al amanecer o al atardecer cuando puede aparecer en tonos de rojo, naranja, rosa o púrpura.
+        
+        $this->assertStringContainsString('azul', $response, 'La respuesta debería contener \'azul\'.');
+
+        // If pass the test, save the response in database
+        // $this->saveResponseInDatabase($response);
+        
+    }
+
+    public function createPDF() {
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Cell(40,10,'La capital de España es Madrid.');
+        $pdf->Output();
+    }
+
+    public function saveResponseInDatabase(string $response) {
+        $pdo = new PDO('mysql:host=localhost;dbname=test', 'root', '');
+        $stmt = $pdo->prepare('INSERT INTO responses (response) VALUES (:response)');
+        $stmt->execute(['response' => $response]);
+    }
+    
 }

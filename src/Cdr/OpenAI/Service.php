@@ -28,6 +28,17 @@ class Service {
             ],
         ]);
 
-        return $result->choices[0]->message->content; // Madrid
+        return $result->choices[0]->message->content; // La capital de España es Madrid.
+    }
+
+    public function sayColorDelCieloEnLaTierra(): string {
+        $result = $this->client->chat()->create([
+            'model' => 'gpt-4',
+            'messages' => [
+                ['role' => 'user', 'content' => '¿De qué color es el cielo en el planeta Tierra?'], // El cielo en el planeta Tierra es generalmente de color azul durante un día despejado. Sin embargo, puede variar en otras condiciones, como al amanecer o al atardecer cuando puede aparecer en tonos de rojo, naranja, rosa o púrpura.
+            ],
+        ]);
+
+        return $result->choices[0]->message->content; // Azul
     }
 }
