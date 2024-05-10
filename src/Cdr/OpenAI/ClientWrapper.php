@@ -1,10 +1,10 @@
 <?php
 
-namespace Cdr;
+namespace Cdr\OpenAI;
 
 use OpenAI;
 
-class OpenAIClientWrapper implements OpenAIClientInterface {
+class ClientWrapper implements ClientInterface {
     private $client;
 
     public function __construct(string $apiKey) {

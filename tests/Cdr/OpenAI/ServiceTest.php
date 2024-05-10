@@ -1,14 +1,14 @@
 <?php
 
-use Cdr\OpenAI;
-use Cdr\OpenAIClientInterface;
+use Cdr\OpenAI\Service as OpenAIService;
+use Cdr\OpenAI\ClientInterface;
 use PHPUnit\Framework\TestCase;
 
 uses(TestCase::class);
 
 test('sayHello returns correct response', function () {
     $expectedResponse = 'Hello! How can I assist you today?';
-    $mockClient = $this->createMock(OpenAIClientInterface::class);
+    $mockClient = $this->createMock(ClientInterface::class);
 
     // Creamos un objeto mock que puede tener métodos adicionales
     $mockChat = new class {
@@ -24,7 +24,7 @@ test('sayHello returns correct response', function () {
     // Configuramos el método chat para que devuelva nuestro mockChat
     $mockClient->method('chat')->willReturn($mockChat);
 
-    $openAI = new OpenAI($mockClient);
+    $openAIService = new OpenAIService($mockClient);
 
-    expect($openAI->sayHello())->toBe($expectedResponse);
+    expect($openAIService->sayHello())->toBe($expectedResponse);
 });

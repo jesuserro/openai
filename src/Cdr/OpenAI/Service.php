@@ -1,11 +1,11 @@
 <?php
 
-namespace Cdr;
+namespace Cdr\OpenAI;
 
-class OpenAI {
-    private readonly OpenAIClientInterface $client;
+class Service {
+    private readonly ClientInterface $client;
 
-    public function __construct(OpenAIClientInterface $client) {
+    public function __construct(ClientInterface $client) {
         $this->client = $client;
     }
 

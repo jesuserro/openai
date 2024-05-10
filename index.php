@@ -2,8 +2,8 @@
 
 require_once 'vendor/autoload.php';
 
-use Cdr\OpenAI;
-use Cdr\OpenAIClientWrapper;
+use Cdr\OpenAI\Service as OpenAIService;
+use Cdr\OpenAI\ClientWrapper;
 
 $apiKey = getenv('OPENAI_API_KEY');
 if (!$apiKey) {
@@ -11,9 +11,9 @@ if (!$apiKey) {
 }
 
 try {
-    $client = new OpenAIClientWrapper($apiKey);
-    $OpenAI = new OpenAI($client);
-    echo $OpenAI->sayHello() . PHP_EOL;
+    $client = new ClientWrapper($apiKey);
+    $openAIService  = new OpenAIService($client);
+    echo $openAIService ->sayHello() . PHP_EOL;
 } catch (\Exception $e) {
     echo 'Error: ' . $e->getMessage();
 }
