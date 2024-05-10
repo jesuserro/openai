@@ -38,6 +38,32 @@ class OpenAIServiceTest extends TestCase {
         
     }
 
+    public function testSayPaymentMethodsInCentraldereservas() {
+        $openAIService = $this->setUpOpenAIService();
+        
+        $response = $openAIService->sayPaymentMethodsInCentraldereservas(); 
+        /*
+        En Centraldereservas.com se pueden realizar pagos utilizando diferentes métodos:
+
+            1. Tarjeta de crédito: es el método más común e inmediato. Aceptan la mayoría de las tarjetas como Visa, MasterCard, AMEX, etc.
+            
+            2. Transferencia bancaria: puedes transferir el monto del pago a su cuenta bancaria. Sin embargo, debes tener en cuenta que la reserva no se confirma hasta que reciben el pago, lo que puede tardar unos días.
+            
+            3. PayPal: si tienes una cuenta de PayPal, puedes utilizarla para realizar tus pagos.
+            
+            4. Pago a plazos: algunos establecimientos permiten el pago a plazos.
+            
+            5. Pago en el hotel: para algunas reservas, Centraldereservas.com ofrece la opción de pagar directamente en el hotel al llegar.
+            
+            Recuerda que los métodos de pago pueden variar en función al país y al hotel. Antes de realizar una reserva, asegúrate de comprobar los métodos de pago disponibles.
+            */
+        
+        $this->assertStringContainsString('Tarjeta de crédito', $response, 'La respuesta debería contener \'tarjeta de crédito\'.');
+        $this->assertStringContainsString('PayPal', $response, 'La respuesta debería contener \'PayPal\'.');
+        // $this->assertStringContainsString('efectivo', $response, 'La respuesta debería contener \'efectivo\'.');
+        
+    }
+
     public function createPDF() {
         $pdf = new FPDF();
         $pdf->AddPage();
