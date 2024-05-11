@@ -26,7 +26,7 @@ class OpenAIServiceTest extends TestCase {
     public function testSayElementoQuimicoLetraO() {
         $openAIService = $this->setUpOpenAIService();
         
-        $response = $openAIService->sayElementoQuimicoOxigeno(); // La capital de España es Madrid.
+        $response = $openAIService->sayElementoQuimicoOxigeno(); // El elemento químico 'O' es el Oxígeno.
         
         $this->assertStringContainsString('Oxígeno', $response, 'La respuesta debería contener \'Oxígeno\'.');
         
