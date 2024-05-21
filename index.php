@@ -2,8 +2,10 @@
 
 require_once 'vendor/autoload.php';
 
-use Cdr\OpenAI\Service as OpenAIService;
+use Cdr\OpenAI\Service;
 use Cdr\OpenAI\ClientWrapper;
+
+use Cdr\Questions\Questions\PaymentMethodsInCentraldereservas;
 
 $apiKey = getenv('OPENAI_API_KEY');
 if (!$apiKey) {
@@ -12,9 +14,11 @@ if (!$apiKey) {
 
 try {
     $client = new ClientWrapper($apiKey);
-    $openAIService  = new OpenAIService($client);
-    echo $openAIService ->sayHello() . PHP_EOL;
-    echo $openAIService ->sayPaymentMethodsInCentraldereservas() . PHP_EOL;
+
+    $service = new Service($client); 
+
+    $pagosQuestion = new PaymentMethodsInCentraldereservas();
+    echo $service->askQuestion($pagosQuestion) . PHP_EOL;
 } catch (\Exception $e) {
     echo 'Error: ' . $e->getMessage(). PHP_EOL;
 }
