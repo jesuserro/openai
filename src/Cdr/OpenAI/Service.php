@@ -21,4 +21,9 @@ class Service {
 
         return $result->choices[0]->message->content;
     }
+
+    public function getAssistant(string $assistantId): array
+    {
+        return $this->client->retrieve($assistantId);
+    }
 }

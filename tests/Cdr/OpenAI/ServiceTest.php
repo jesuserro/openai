@@ -2,6 +2,7 @@
 
 use Cdr\OpenAI\Service as OpenAIService;
 use Cdr\OpenAI\ClientWrapper;
+use Cdr\OpenAI\ClientInterface;
 use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
 use Cdr\Questions\Questions\ElementoQuimicoOxigenoQuestion;
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
@@ -45,17 +46,17 @@ class OpenAIServiceTest extends TestCase {
         $this->assertStringContainsString('PayPal', $response, 'La respuesta debería contener \'PayPal\'.');
     }
 
-    public function createPDF() {
-        $pdf = new FPDF();
-        $pdf->AddPage();
-        $pdf->SetFont('Arial','B',16);
-        $pdf->Cell(40,10,'La capital de España es Madrid.');
-        $pdf->Output();
+    public function testGetAssistant()
+    {
+        $openAIService = $this->setUpOpenAIService();
+        
+        $assistantId = 'asst_qhhQt8ByYXMB9iYyclOlsPlw';
+        $expectedResponse = ['id' => $assistantId, 'name' => 'NgesTest-Jesús'];
+
+        $response = $openAIService->getAssistant($assistantId);
+
+        $this->assertEquals($expectedResponse['name'], $response['name']);
+
     }
 
-    public function saveResponseInDatabase(string $response) {
-        $pdo = new PDO('mysql:host=localhost;dbname=test', 'root', '');
-        $stmt = $pdo->prepare('INSERT INTO responses (response) VALUES (:response)');
-        $stmt->execute(['response' => $response]);
-    }
 }
