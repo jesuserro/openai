@@ -5,7 +5,7 @@ require_once 'vendor/autoload.php';
 use Cdr\OpenAI\Service;
 use Cdr\OpenAI\ClientWrapper;
 
-use Cdr\Questions\Questions\PaymentMethodsInCentraldereservas;
+use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
 
 $apiKey = getenv('OPENAI_API_KEY');
 if (!$apiKey) {
@@ -17,7 +17,7 @@ try {
 
     $service = new Service($client); 
 
-    $pagosQuestion = new PaymentMethodsInCentraldereservas();
+    $pagosQuestion = new PaymentMethodsInCentraldereservasQuestion();
     echo $service->askQuestion($pagosQuestion) . PHP_EOL;
 } catch (\Exception $e) {
     echo 'Error: ' . $e->getMessage(). PHP_EOL;
