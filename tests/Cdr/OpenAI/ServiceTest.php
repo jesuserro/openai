@@ -65,6 +65,8 @@ class OpenAIServiceTest extends TestCase {
 
         $response = $openAIService->getAssistant($this->assistantId);
 
+        $this->assertArrayHasKey('id', $response);
+        $this->assertArrayHasKey('name', $response);
         $this->assertEquals($expectedResponse['name'], $response['name']);
     }
 }

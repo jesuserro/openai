@@ -15,8 +15,7 @@ class ClientWrapper implements ClientInterface {
         return $this->client->chat();
     }
 
-    public function retrieve(string $assistantId): array
-    {
-        return  $this->client->assistants()->retrieve($assistantId)->toArray();
+    public function retrieve(string $assistantId){
+        return  $this->client->assistants()->retrieve($assistantId);
     }
 }
