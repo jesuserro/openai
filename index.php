@@ -6,6 +6,7 @@ use Cdr\OpenAI\Service;
 use Cdr\OpenAI\ClientWrapper;
 
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
+use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
 
 $apiKey = getenv('OPENAI_API_KEY');
 if (!$apiKey) {
@@ -24,10 +25,9 @@ try {
     echo PHP_EOL;
 
     // 2. Ejemplo de uso de callOpenAI
-    $userMessage = 'Hello, world!';
-    $response = $service->callOpenAI($userMessage);
+    $capitalMadridQuestion = new CapitalDeEspañaQuestion();
+    $response = $service->callOpenAI( $capitalMadridQuestion->getQuestion() );
     $responseData = json_decode($response, true);
-
     echo 'Respuesta a callOpenAI: ' . PHP_EOL . $responseData['choices'][0]['message']['content'] . PHP_EOL;
 
 } catch (\Exception $e) {
