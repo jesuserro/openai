@@ -26,7 +26,7 @@ try {
 
     // 2. Ejemplo de uso de callOpenAI
     $capitalMadridQuestion = new CapitalDeEspañaQuestion();
-    $response = $service->callOpenAI( $capitalMadridQuestion->getQuestion() );
+    $response = $service->callOpenAi( $capitalMadridQuestion->getQuestion() );
     $responseData = json_decode($response, true);
     echo 'Respuesta a callOpenAI: ' . PHP_EOL . $responseData['choices'][0]['message']['content'] . PHP_EOL;
 

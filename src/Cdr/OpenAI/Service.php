@@ -26,7 +26,7 @@ class Service {
      * @return string
      * @throws \Exception
      */
-    public function callOpenAI(string $userMessage): string
+    public function callOpenAi(string $userMessage): string
     {
         $data = $this->buildRequestData('user', $userMessage);
         return $this->executeCurlRequest($data);

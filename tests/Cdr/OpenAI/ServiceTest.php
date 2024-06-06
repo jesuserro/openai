@@ -70,7 +70,7 @@ class OpenAIServiceTest extends TestCase {
         $this->assertEquals($expectedResponse['name'], $response['name']);
     }
 
-    public function testCallOpenAI()
+    public function testCallOpenAi()
     {
         $openAIService = $this->setUpOpenAIService();
         $question = new CapitalDeEspañaQuestion();
