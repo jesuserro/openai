@@ -69,4 +69,21 @@ class OpenAIServiceTest extends TestCase {
         $this->assertArrayHasKey('name', $response);
         $this->assertEquals($expectedResponse['name'], $response['name']);
     }
+
+    public function testCallOpenAI()
+    {
+        $openAIService = $this->setUpOpenAIService();
+        $response = $openAIService->callOpenAI('Hello, world!');
+
+        $this->assertNotEmpty($response, 'The response should not be empty');
+
+        $responseData = json_decode($response, true);
+
+        // Show response data for debugging
+        // fwrite(STDERR, print_r($responseData, true));
+
+        $this->assertArrayHasKey('choices', $responseData, 'The response should contain choices key');
+        $this->assertEquals('Hello! How can I assist you today?', $responseData['choices'][0]['message']['content'], 'The response content should match the expected assistant message');
+    }
+
 }
