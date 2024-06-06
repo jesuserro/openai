@@ -12,12 +12,7 @@ class Service {
     }
 
     public function askQuestion(QuestionInterface $question): string {
-        $result = $this->client->chat()->create([
-            'model' => 'gpt-4o',
-            'messages' => [
-                ['role' => 'user', 'content' => $question->getQuestion()],
-            ],
-        ]);
+        $result = $this->client->chat()->create($this->buildRequestData('user', $question->getQuestion()));
 
         return $result->choices[0]->message->content;
     }
@@ -33,13 +28,17 @@ class Service {
      */
     public function callOpenAI(string $userMessage): string
     {
-        $endpointUrl = "https://api.openai.com/v1/chat/completions";
+        $data = $this->buildRequestData('user', $userMessage);
+        return $this->executeCurlRequest($data);
+    }
 
-        $data = [
+    private function buildRequestData(string $role, string $content): array
+    {
+        return [
             'model' => 'gpt-4o',
             'messages' => [
                 ['role' => 'system', 'content' => 'You are a helpful assistant.'],
-                ['role' => 'user', 'content' => $userMessage]
+                ['role' => $role, 'content' => $content]
             ],
             'temperature' => 0.5,
             'top_p' => 1,
@@ -48,7 +47,11 @@ class Service {
             'presence_penalty' => 0,
             'frequency_penalty' => 0,
         ];
+    }
 
+    private function executeCurlRequest(array $data): string
+    {
+        $endpointUrl = "https://api.openai.com/v1/chat/completions";
         $headers = [
             'Content-Type: application/json',
             'Authorization: Bearer ' . getenv('OPENAI_API_KEY')
@@ -61,10 +64,17 @@ class Service {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
         $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            $error_msg = curl_error($ch);
+            curl_close($ch);
+            throw new \Exception('cURL error: ' . $error_msg);
+        }
+
         curl_close($ch);
 
         if ($response === false) {
-            throw new \Exception('Error executing cURL request: ' . curl_error($ch));
+            throw new \Exception('Error executing cURL request.');
         }
 
         return $response;
