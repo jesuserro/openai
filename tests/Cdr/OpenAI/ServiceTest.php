@@ -2,7 +2,6 @@
 
 use Cdr\OpenAI\Service as OpenAIService;
 use Cdr\OpenAI\ClientWrapper;
-use Cdr\OpenAI\ClientInterface;
 use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
 use Cdr\Questions\Questions\ElementoQuimicoOxigenoQuestion;
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
@@ -13,6 +12,10 @@ class OpenAIServiceTest extends TestCase {
 
     public function setUp(): void
     {
+        // Cargar variables de entorno desde el archivo .env.test
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../', '.env.test');
+        $dotenv->load();
+
         $this->assistantId = $_ENV['OPENAI_ASSISTANT_ID'];
         if (!$this->assistantId) {
             $this->fail('Assistant ID no configurado. Asegúrate de que la variable de entorno OPENAI_ASSISTANT_ID está establecida.');
@@ -38,7 +41,7 @@ class OpenAIServiceTest extends TestCase {
         $this->assertStringContainsString('Madrid', $response, 'La respuesta debería contener \'Madrid\'.');
     }
 
-    public function _testSayElementoQuimicoLetraO() {
+    public function testSayElementoQuimicoLetraO() {
         $openAIService = $this->setUpOpenAIService();
         $question = new ElementoQuimicoOxigenoQuestion();
         
@@ -47,7 +50,7 @@ class OpenAIServiceTest extends TestCase {
         $this->assertStringContainsString('oxígeno', $response, 'La respuesta debería contener \'oxígeno\'.');
     }
 
-    public function _testSayPaymentMethodsInCentraldereservas() {
+    public function testSayPaymentMethodsInCentraldereservas() {
         $openAIService = $this->setUpOpenAIService();
         $question = new PaymentMethodsInCentraldereservasQuestion();
         
@@ -74,7 +77,7 @@ class OpenAIServiceTest extends TestCase {
     {
         $openAIService = $this->setUpOpenAIService();
         $question = new CapitalDeEspañaQuestion();
-        $response = $openAIService->callOpenAI( $question->getQuestion() );
+        $response = $openAIService->callOpenAI($question->getQuestion());
 
         $this->assertNotEmpty($response, 'The response should not be empty');
 
@@ -85,7 +88,5 @@ class OpenAIServiceTest extends TestCase {
 
         $this->assertArrayHasKey('choices', $responseData, 'The response should contain choices key');
         $this->assertStringContainsString('Madrid', $responseData['choices'][0]['message']['content'], 'La respuesta debería contener \'Madrid\'.');
-
     }
-
 }
