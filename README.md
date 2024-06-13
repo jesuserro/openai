@@ -64,7 +64,7 @@ composer require guzzlehttp/guzzle
 Then, interact with OpenAI's API:
 
 ```php
-$yourApiKey = getenv('YOUR_API_KEY');
+$yourApiKey = $_ENV['OPENAI_API_KEY'];
 $client = OpenAI::client($yourApiKey);
 
 $result = $client->chat()->create([
@@ -80,7 +80,7 @@ echo $result->choices[0]->message->content; // Hello! How can I assist you today
 If necessary, it is possible to configure and create a separate client.
 
 ```php
-$yourApiKey = getenv('YOUR_API_KEY');
+$yourApiKey = $_ENV['OPENAI_API_KEY'];
 
 $client = OpenAI::factory()
     ->withApiKey($yourApiKey)

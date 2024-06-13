@@ -8,9 +8,22 @@ use Cdr\OpenAI\ClientWrapper;
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
 use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
 
-$apiKey = getenv('OPENAI_API_KEY');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$apiKey = $_ENV['OPENAI_API_KEY'];
 if (!$apiKey) {
     exit("API Key no configurada. Asegúrate de que la variable de entorno OPENAI_API_KEY está establecida.\n");
+}
+
+function output($message) {
+    if (php_sapi_name() == "cli") {
+        // Ejecutado en la terminal
+        echo $message . PHP_EOL;
+    } else {
+        // Ejecutado en un navegador
+        echo nl2br($message) . "<br />";
+    }
 }
 
 try {
@@ -20,15 +33,17 @@ try {
 
     // 1. Ejemplo de uso de askQuestion
     $pagosQuestion = new PaymentMethodsInCentraldereservasQuestion();
-    echo 'Respuesta a PaymentMethodsInCentraldereservasQuestion: ' . PHP_EOL . $service->askQuestion($pagosQuestion) . PHP_EOL;
+    $answer = $service->askQuestion($pagosQuestion);
+    output('Respuesta a PaymentMethodsInCentraldereservasQuestion: ' . PHP_EOL . $answer);
 
-    echo PHP_EOL;
+    output('---');
 
     // 2. Ejemplo de uso de callOpenAI
     $capitalMadridQuestion = new CapitalDeEspañaQuestion();
     $response = $service->callOpenAi( $capitalMadridQuestion->getQuestion() );
     $responseData = json_decode($response, true);
-    echo 'Respuesta a callOpenAI: ' . PHP_EOL . $responseData['choices'][0]['message']['content'] . PHP_EOL;
+    $answer = $responseData['choices'][0]['message']['content']; 
+    output('Respuesta a CapitalDeEspañaQuestion: ' . PHP_EOL . $answer);
 
 } catch (\Exception $e) {
 

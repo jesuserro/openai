@@ -9,3 +9,6 @@
 playground/*
 .idea
 .vscode
+
+# Ignore the .env file
+.env

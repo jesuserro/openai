@@ -13,14 +13,14 @@ class OpenAIServiceTest extends TestCase {
 
     public function setUp(): void
     {
-        $this->assistantId = getenv('OPENAI_ASSISTANT_ID');
+        $this->assistantId = $_ENV['OPENAI_ASSISTANT_ID'];
         if (!$this->assistantId) {
             $this->fail('Assistant ID no configurado. Asegúrate de que la variable de entorno OPENAI_ASSISTANT_ID está establecida.');
         }
     }
 
     public function setUpOpenAIService(): OpenAIService {
-        $apiKey = getenv('OPENAI_API_KEY');
+        $apiKey = $_ENV['OPENAI_API_KEY'];
         if (!$apiKey) {
             $this->fail('API Key no configurada. Asegúrate de que la variable de entorno OPENAI_API_KEY está establecida.');
         }

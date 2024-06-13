@@ -54,7 +54,7 @@ class Service {
         $endpointUrl = "https://api.openai.com/v1/chat/completions";
         $headers = [
             'Content-Type: application/json',
-            'Authorization: Bearer ' . getenv('OPENAI_API_KEY')
+            'Authorization: Bearer ' . $_ENV['OPENAI_API_KEY']
         ];
 
         $ch = curl_init($endpointUrl);
