@@ -4,20 +4,22 @@ namespace Cdr\Utils;
 
 class CurlClient {
     private string $endpointUrl;
-    private array $headers;
+    private string $apiKey;
 
     public function __construct(string $endpointUrl, string $apiKey) {
         $this->endpointUrl = $endpointUrl;
-        $this->headers = [
-            'Content-Type: application/json',
-            'Authorization: Bearer ' . $apiKey
-        ];
+        $this->apiKey = $apiKey;
     }
 
-    public function post(array $data): string {
+    public function post(array $data, array $additionalHeaders = []): string {
+        $headers = array_merge([
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $this->apiKey
+        ], $additionalHeaders);
+
         $ch = curl_init($this->endpointUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
