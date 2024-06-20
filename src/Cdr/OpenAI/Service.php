@@ -23,14 +23,25 @@ class Service {
         return $this->client->retrieve($assistantId);
     }
 
-    /**
-     * @param string $userMessage
-     * @return string
-     * @throws \Exception
-     */
     public function callOpenAi(string $userMessage): string {
         $data = $this->buildRequestData('user', $userMessage);
         return $this->curlClient->post($data);
+    }
+
+    public function createThreadedAssistant(string $userMessage): string {
+        $data = $this->buildRequestData('user', $userMessage);
+        $response = $this->curlClient->post($data);
+
+        $responseData = json_decode($response, true);
+        return $responseData['id'];
+    }
+
+    public function askThreadedQuestion(string $assistantId, string $userMessage): string {
+        $data = $this->buildRequestData('user', $userMessage);
+        $response = $this->curlClient->post($data, ['OpenAI-Thread-Id' => $assistantId]);
+
+        $responseData = json_decode($response, true);
+        return $responseData['choices'][0]['message']['content'];
     }
 
     private function buildRequestData(string $role, string $content): array {

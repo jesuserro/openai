@@ -22,19 +22,30 @@ try {
     $curlClient = new CurlClient('https://api.openai.com/v1/chat/completions', $apiKey);
     $service = new Service($client, $curlClient);
 
-    // 1. Ejemplo de uso de askQuestion
+    // 1. Example askQuestion
     $pagosQuestion = new PaymentMethodsInCentraldereservasQuestion();
     $answer = $service->askQuestion($pagosQuestion);
     Output::print('Respuesta a PaymentMethodsInCentraldereservasQuestion: ' . PHP_EOL . $answer);
 
     Output::print('---');
 
-    // 2. Ejemplo de uso de callOpenAI
-    $capitalMadridQuestion = new CapitalDeEspañaQuestion();
-    $response = $service->callOpenAi($capitalMadridQuestion->getQuestion());
+    // 2. Second example of another single question
+    $CapitalMadridQuestion = new CapitalDeEspañaQuestion();
+    $capitalMadridQuestion = $CapitalMadridQuestion->getQuestion();
+
+    $response = $service->callOpenAi($capitalMadridQuestion);
     $responseData = json_decode($response, true);
     $answer = $responseData['choices'][0]['message']['content']; 
     Output::print('Respuesta a CapitalDeEspañaQuestion: ' . PHP_EOL . $answer);
+
+    Output::print('---');
+
+    // 3. Example Threaded questions: createThreadedAssistant and askThreadedQuestion
+    $threadId = $service->createThreadedAssistant($capitalMadridQuestion);
+    Output::print('Thread ID: ' . $threadId);
+
+    $secondResponse = $service->askThreadedQuestion($threadId, '¿Qué es conocido por ser el centro cultural de España?');
+    Output::print('Respuesta del hilo a segunda pregunta: ' . PHP_EOL . $secondResponse);
 
 } catch (\Exception $e) {
     Output::print('Error: ' . $e->getMessage());

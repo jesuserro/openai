@@ -91,4 +91,17 @@ class OpenAIServiceTest extends TestCase {
         $this->assertArrayHasKey('choices', $responseData, 'The response should contain choices key');
         $this->assertStringContainsString('Madrid', $responseData['choices'][0]['message']['content'], 'La respuesta debería contener \'Madrid\'.');
     }
+
+    public function testThreadedConversation() {
+        $openAIService = $this->setUpOpenAIService();
+        
+        // Create a thread with the first question
+        $threadId = $openAIService->createThreadedAssistant('¿Cuál es la capital de España?');
+        $this->assertNotEmpty($threadId, 'Thread ID should not be empty');
+
+        // Ask a follow-up question in the same thread
+        $secondResponse = $openAIService->askThreadedQuestion($threadId, '¿Qué es conocido por ser el centro cultural de España?');
+        
+        $this->assertStringContainsString('Madrid', $secondResponse, 'La respuesta debería contener \'Madrid\'.');
+    }
 }
