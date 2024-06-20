@@ -3,21 +3,23 @@
 namespace Cdr\OpenAI;
 
 use Cdr\Questions\QuestionInterface;
+use Cdr\Utils\CurlClient;
 
 class Service {
     private readonly ClientInterface $client;
+    private readonly CurlClient $curlClient;
 
-    public function __construct(ClientInterface $client) {
+    public function __construct(ClientInterface $client, CurlClient $curlClient) {
         $this->client = $client;
+        $this->curlClient = $curlClient;
     }
 
     public function askQuestion(QuestionInterface $question): string {
         $result = $this->client->chat()->create($this->buildRequestData('user', $question->getQuestion()));
-
         return $result->choices[0]->message->content;
     }
 
-    public function getAssistant(string $assistantId){
+    public function getAssistant(string $assistantId) {
         return $this->client->retrieve($assistantId);
     }
 
@@ -26,14 +28,12 @@ class Service {
      * @return string
      * @throws \Exception
      */
-    public function callOpenAi(string $userMessage): string
-    {
+    public function callOpenAi(string $userMessage): string {
         $data = $this->buildRequestData('user', $userMessage);
-        return $this->executeCurlRequest($data);
+        return $this->curlClient->post($data);
     }
 
-    private function buildRequestData(string $role, string $content): array
-    {
+    private function buildRequestData(string $role, string $content): array {
         return [
             'model' => 'gpt-4o',
             'messages' => [
@@ -47,36 +47,5 @@ class Service {
             'presence_penalty' => 0,
             'frequency_penalty' => 0,
         ];
-    }
-
-    private function executeCurlRequest(array $data): string
-    {
-        $endpointUrl = "https://api.openai.com/v1/chat/completions";
-        $headers = [
-            'Content-Type: application/json',
-            'Authorization: Bearer ' . $_ENV['OPENAI_API_KEY']
-        ];
-
-        $ch = curl_init($endpointUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            $error_msg = curl_error($ch);
-            curl_close($ch);
-            throw new \Exception('cURL error: ' . $error_msg);
-        }
-
-        curl_close($ch);
-
-        if ($response === false) {
-            throw new \Exception('Error executing cURL request.');
-        }
-
-        return $response;
     }
 }

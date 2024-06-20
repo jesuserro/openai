@@ -4,6 +4,7 @@ require_once 'vendor/autoload.php';
 
 use Cdr\OpenAI\Service;
 use Cdr\OpenAI\ClientWrapper;
+use Cdr\Utils\CurlClient;
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
 use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
 use Cdr\Utils\Output;
@@ -18,7 +19,8 @@ if (!$apiKey) {
 
 try {
     $client = new ClientWrapper($apiKey);
-    $service = new Service($client); 
+    $curlClient = new CurlClient('https://api.openai.com/v1/chat/completions', $apiKey);
+    $service = new Service($client, $curlClient);
 
     // 1. Ejemplo de uso de askQuestion
     $pagosQuestion = new PaymentMethodsInCentraldereservasQuestion();
