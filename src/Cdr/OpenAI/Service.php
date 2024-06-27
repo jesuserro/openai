@@ -20,8 +20,16 @@ class Service {
         return $response->choices[0]->message->content;
     }
 
-    public function getAssistant(string $assistantId) {
-        return $this->client->retrieve($assistantId);
+    public function getAssistant(string $assistantId): array {
+        $url = "https://api.openai.com/v1/assistants/{$assistantId}";
+        $headers = [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $_ENV['OPENAI_API_KEY'],
+            'OpenAI-Beta: assistants=v2'
+        ];
+        $response = $this->curlClient->get($url, $headers);
+
+        return JsonResponseHandler::handle($response);
     }
 
     public function sendMessage(string $userMessage, string $assistantId = null): string {
@@ -56,5 +64,4 @@ class Service {
             'frequency_penalty' => 0,
         ];
     }
-
 }

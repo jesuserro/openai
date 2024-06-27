@@ -39,4 +39,20 @@ class CurlClient {
 
         return $response;
     }
+
+    public function get(string $url, array $headers = []): string {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            throw new \RuntimeException('cURL error: ' . curl_error($ch));
+        }
+
+        curl_close($ch);
+
+        return $response;
+    }
 }

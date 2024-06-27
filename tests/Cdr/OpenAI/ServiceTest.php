@@ -4,7 +4,6 @@ use Cdr\OpenAI\Service;
 use Cdr\OpenAI\ClientWrapper;
 use Cdr\Utils\CurlClient;
 use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
-use Cdr\Questions\Questions\ElementoQuimicoOxigenoQuestion;
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
 use PHPUnit\Framework\TestCase;
 
@@ -58,13 +57,17 @@ class OpenAIServiceTest extends TestCase {
     public function testGetAssistant() {
         $openAIService = $this->setUpOpenAIService();
         
+        // Expected response structure for the test
         $expectedResponse = ['id' => $this->assistantId, 'name' => 'NgesTest-Jesús'];
 
+        // Make the API call
         $response = $openAIService->getAssistant($this->assistantId);
 
+        // Assertions to verify the response structure
         $this->assertArrayHasKey('id', $response);
         $this->assertArrayHasKey('name', $response);
         $this->assertEquals($expectedResponse['name'], $response['name']);
+        $this->assertEquals($expectedResponse['id'], $response['id']);
     }
 
     public function testSendMessageToAssistant() {
