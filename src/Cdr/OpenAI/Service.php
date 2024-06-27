@@ -29,19 +29,13 @@ class Service {
     }
 
     public function createThreadedAssistant(string $userMessage): string {
-        $data = $this->buildRequestData('user', $userMessage);
-        $response = $this->curlClient->post($data);
-
-        $responseData = json_decode($response, true);
-        return $responseData['id'];
+        $response = $this->sendMessage($userMessage);
+        return $response['id'];
     }
 
     public function askThreadedQuestion(string $assistantId, string $userMessage): string {
-        $data = $this->buildRequestData('user', $userMessage);
-        $response = $this->curlClient->post($data, ['OpenAI-Thread-Id' => $assistantId]);
-
-        $responseData = json_decode($response, true);
-        return $responseData['choices'][0]['message']['content'];
+        $response = $this->sendMessage($userMessage, $assistantId);
+        return $response['choices'][0]['message']['content'];
     }
 
     private function buildRequestData(string $role, string $content): array {
@@ -58,5 +52,22 @@ class Service {
             'presence_penalty' => 0,
             'frequency_penalty' => 0,
         ];
+    }
+
+    private function sendMessage(string $userMessage, string $assistantId = null): array {
+        $data = $this->buildRequestData('user', $userMessage);
+        $headers = $assistantId ? ['OpenAI-Thread-Id' => $assistantId] : [];
+        $response = $this->curlClient->post($data, $headers);
+
+        $responseData = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException('Failed to decode JSON response: ' . json_last_error_msg() . ' Response: ' . $response);
+        }
+
+        if (!isset($responseData['choices'][0]['message']['content']) && !isset($responseData['id'])) {
+            throw new \RuntimeException('Unexpected response structure: ' . $response);
+        }
+
+        return $responseData;
     }
 }
