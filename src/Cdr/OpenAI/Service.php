@@ -27,16 +27,8 @@ class Service {
         $data = $this->buildRequestData('user', $userMessage);
         $headers = $assistantId ? ['OpenAI-Thread-Id' => $assistantId] : [];
         $response = $this->curlClient->post($data, $headers);
-
-        $responseData = json_decode($response, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \RuntimeException('Failed to decode JSON response: ' . json_last_error_msg() . ' Response: ' . $response);
-        }
-
-        if (!isset($responseData['choices'][0]['message']['content']) && !isset($responseData['id'])) {
-            throw new \RuntimeException('Unexpected response structure: ' . $response);
-        }
-
+        
+        $responseData = $this->handleApiResponse($response);
         return $responseData['choices'][0]['message']['content'];
     }
 
@@ -44,15 +36,7 @@ class Service {
         $data = $this->buildRequestData('user', $userMessage);
         $response = $this->curlClient->post($data);
 
-        $responseData = json_decode($response, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \RuntimeException('Failed to decode JSON response: ' . json_last_error_msg() . ' Response: ' . $response);
-        }
-
-        if (!isset($responseData['id'])) {
-            throw new \RuntimeException('Unexpected response structure: ' . $response);
-        }
-
+        $responseData = $this->handleApiResponse($response);
         return $responseData['id'];
     }
 
@@ -70,5 +54,18 @@ class Service {
             'presence_penalty' => 0,
             'frequency_penalty' => 0,
         ];
+    }
+
+    private function handleApiResponse(string $response): array {
+        $responseData = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \RuntimeException('Failed to decode JSON response: ' . json_last_error_msg() . ' Response: ' . $response);
+        }
+
+        if (!isset($responseData['choices'][0]['message']['content']) && !isset($responseData['id'])) {
+            throw new \RuntimeException('Unexpected response structure: ' . $response);
+        }
+
+        return $responseData;
     }
 }
