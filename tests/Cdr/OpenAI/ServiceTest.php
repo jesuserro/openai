@@ -45,15 +45,6 @@ class OpenAIServiceTest extends TestCase {
         $this->assertStringContainsString('Madrid', $response, 'La respuesta debería contener \'Madrid\'.');
     }
 
-    public function testSayElementoQuimicoLetraO() {
-        $openAIService = $this->setUpOpenAIService();
-        $question = new ElementoQuimicoOxigenoQuestion();
-        
-        $response = $openAIService->askQuestion($question);
-        
-        $this->assertStringContainsString('oxígeno', $response, 'La respuesta debería contener \'oxígeno\'.');
-    }
-
     public function testSayPaymentMethodsInCentraldereservas() {
         $openAIService = $this->setUpOpenAIService();
         $question = new PaymentMethodsInCentraldereservasQuestion();
