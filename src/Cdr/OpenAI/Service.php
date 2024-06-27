@@ -24,8 +24,8 @@ class Service {
     }
 
     public function callOpenAi(string $userMessage): string {
-        $data = $this->buildRequestData('user', $userMessage);
-        return $this->curlClient->post($data);
+        $response = $this->sendMessage($userMessage);
+        return $response['choices'][0]['message']['content'];
     }
 
     public function createThreadedAssistant(string $userMessage): string {

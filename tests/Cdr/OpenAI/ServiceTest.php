@@ -79,17 +79,15 @@ class OpenAIServiceTest extends TestCase {
     public function testCallOpenAi() {
         $openAIService = $this->setUpOpenAIService();
         $question = new CapitalDeEspañaQuestion();
-        $response = $openAIService->callOpenAI($question->getQuestion());
-
+        $response = $openAIService->callOpenAi($question->getQuestion());
+    
         $this->assertNotEmpty($response, 'The response should not be empty');
 
-        $responseData = json_decode($response, true);
-
         // Show response data for debugging
-        // fwrite(STDERR, print_r($responseData, true));
-
-        $this->assertArrayHasKey('choices', $responseData, 'The response should contain choices key');
-        $this->assertStringContainsString('Madrid', $responseData['choices'][0]['message']['content'], 'La respuesta debería contener \'Madrid\'.');
+        // fwrite(STDERR, print_r($response, true));
+    
+        // As the response is already decoded and we directly get the content, we don't need to decode it again.
+        $this->assertStringContainsString('Madrid', $response, 'La respuesta debería contener \'Madrid\'.');
     }
 
     public function testThreadedConversation() {

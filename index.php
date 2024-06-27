@@ -33,9 +33,7 @@ try {
     $CapitalMadridQuestion = new CapitalDeEspañaQuestion();
     $capitalMadridQuestion = $CapitalMadridQuestion->getQuestion();
 
-    $response = $service->callOpenAi($capitalMadridQuestion);
-    $responseData = json_decode($response, true);
-    $answer = $responseData['choices'][0]['message']['content']; 
+    $answer = $service->callOpenAi($capitalMadridQuestion);
     Output::print('Respuesta a CapitalDeEspañaQuestion: ' . PHP_EOL . $answer);
 
     Output::print('---');
