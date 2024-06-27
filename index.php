@@ -29,7 +29,7 @@ try {
     // Ejemplo 2: Pregunta simple con sendMessage
     handleSendMessage($service);
 
-    // Ejemplo 3: Preguntas encadenadas con createThreadedAssistant y sendMessage
+    // Ejemplo 3: Preguntas encadenadas con createConversationThread y sendMessage
     handleThreadedQuestions($service);
 
 } catch (\Exception $e) {
