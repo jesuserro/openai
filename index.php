@@ -26,10 +26,10 @@ try {
     // Ejemplo 1: Pregunta simple con askQuestion
     handleAskQuestion($service);
 
-    // Ejemplo 2: Pregunta simple con callOpenAi
-    handleCallOpenAi($service);
+    // Ejemplo 2: Pregunta simple con sendMessage
+    handleSendMessage($service);
 
-    // Ejemplo 3: Preguntas encadenadas con createThreadedAssistant y callOpenAi
+    // Ejemplo 3: Preguntas encadenadas con createThreadedAssistant y sendMessage
     handleThreadedQuestions($service);
 
 } catch (\Exception $e) {
@@ -47,12 +47,12 @@ function handleAskQuestion(Service $service) {
 }
 
 /**
- * Handle the callOpenAi example
+ * Handle the sendMessage example
  */
-function handleCallOpenAi(Service $service) {
+function handleSendMessage(Service $service) {
     $capitalQuestion = new CapitalDeEspañaQuestion();
     $questionText = $capitalQuestion->getQuestion();
-    $answer = $service->sendMessageToAssistant($questionText);
+    $answer = $service->sendMessage($questionText);
     Output::print('Respuesta a CapitalDeEspañaQuestion: ' . PHP_EOL . $answer);
     Output::print('---');
 }
@@ -69,7 +69,7 @@ function handleThreadedQuestions(Service $service) {
     Output::print('Thread ID: ' . $threadId);
 
     // Ask a follow-up question in the same thread
-    $secondResponse = $service->sendMessageToAssistant('¿Qué es conocido por ser el centro cultural de España?', $threadId);
+    $secondResponse = $service->sendMessage('¿Qué es conocido por ser el centro cultural de España?', $threadId);
     Output::print('Respuesta del hilo a segunda pregunta: ' . PHP_EOL . $secondResponse);
     Output::print('---');
 }
