@@ -67,10 +67,10 @@ class OpenAIServiceTest extends TestCase {
         $this->assertEquals($expectedResponse['name'], $response['name']);
     }
 
-    public function testCallOpenAi() {
+    public function testSendMessageToAssistant() {
         $openAIService = $this->setUpOpenAIService();
         $question = new CapitalDeEspañaQuestion();
-        $response = $openAIService->callOpenAi($question->getQuestion());
+        $response = $openAIService->sendMessageToAssistant($question->getQuestion());
     
         $this->assertNotEmpty($response, 'The response should not be empty');
 
@@ -89,7 +89,7 @@ class OpenAIServiceTest extends TestCase {
         $this->assertNotEmpty($threadId, 'Thread ID should not be empty');
 
         // Ask a follow-up question in the same thread
-        $secondResponse = $openAIService->askThreadedQuestion($threadId, '¿Qué es conocido por ser el centro cultural de España?');
+        $secondResponse = $openAIService->sendMessageToAssistant('¿Qué es conocido por ser el centro cultural de España?', $threadId);
         
         $this->assertStringContainsString('Madrid', $secondResponse, 'La respuesta debería contener \'Madrid\'.');
     }

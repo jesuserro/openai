@@ -23,13 +23,13 @@ try {
     $curlClient = new CurlClient('https://api.openai.com/v1/chat/completions', $apiKey);
     $service = new Service($client, $curlClient);
 
-    // Example 1: Simple question with the Github OpenAi Client (askQuestion)
+    // Ejemplo 1: Pregunta simple con askQuestion
     handleAskQuestion($service);
 
-    // Example 2: Simple question with CURL (callOpenAi)
+    // Ejemplo 2: Pregunta simple con callOpenAi
     handleCallOpenAi($service);
 
-    // Example 3: Chained questions with createThreadedAssistant and askThreadedQuestion
+    // Ejemplo 3: Preguntas encadenadas con createThreadedAssistant y callOpenAi
     handleThreadedQuestions($service);
 
 } catch (\Exception $e) {
@@ -52,7 +52,7 @@ function handleAskQuestion(Service $service) {
 function handleCallOpenAi(Service $service) {
     $capitalQuestion = new CapitalDeEspañaQuestion();
     $questionText = $capitalQuestion->getQuestion();
-    $answer = $service->callOpenAi($questionText);
+    $answer = $service->sendMessageToAssistant($questionText);
     Output::print('Respuesta a CapitalDeEspañaQuestion: ' . PHP_EOL . $answer);
     Output::print('---');
 }
@@ -69,7 +69,7 @@ function handleThreadedQuestions(Service $service) {
     Output::print('Thread ID: ' . $threadId);
 
     // Ask a follow-up question in the same thread
-    $secondResponse = $service->askThreadedQuestion($threadId, '¿Qué es conocido por ser el centro cultural de España?');
+    $secondResponse = $service->sendMessageToAssistant('¿Qué es conocido por ser el centro cultural de España?', $threadId);
     Output::print('Respuesta del hilo a segunda pregunta: ' . PHP_EOL . $secondResponse);
     Output::print('---');
 }

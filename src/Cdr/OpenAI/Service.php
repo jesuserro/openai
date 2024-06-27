@@ -15,27 +15,22 @@ class Service {
     }
 
     public function askQuestion(QuestionInterface $question): string {
-        $result = $this->client->chat()->create($this->buildRequestData('user', $question->getQuestion()));
-        return $result->choices[0]->message->content;
+        $response = $this->client->chat()->create($this->buildRequestData('user', $question->getQuestion()));
+        return $response->choices[0]->message->content;
     }
 
     public function getAssistant(string $assistantId) {
         return $this->client->retrieve($assistantId);
     }
 
-    public function callOpenAi(string $userMessage): string {
-        $response = $this->sendMessage($userMessage);
+    public function sendMessageToAssistant(string $userMessage, string $assistantId = null): string {
+        $response = $this->sendMessage($userMessage, $assistantId);
         return $response['choices'][0]['message']['content'];
     }
 
     public function createThreadedAssistant(string $userMessage): string {
         $response = $this->sendMessage($userMessage);
         return $response['id'];
-    }
-
-    public function askThreadedQuestion(string $assistantId, string $userMessage): string {
-        $response = $this->sendMessage($userMessage, $assistantId);
-        return $response['choices'][0]['message']['content'];
     }
 
     private function buildRequestData(string $role, string $content): array {
