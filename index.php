@@ -65,7 +65,7 @@ function handleThreadedQuestions(Service $service) {
     $questionText = $capitalQuestion->getQuestion();
 
     // Create a threaded conversation
-    $threadId = $service->createThreadedAssistant($questionText);
+    $threadId = $service->createConversationThread($questionText);
     Output::print('Thread ID: ' . $threadId);
 
     // Ask a follow-up question in the same thread

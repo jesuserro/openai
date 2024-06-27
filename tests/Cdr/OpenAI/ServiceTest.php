@@ -88,7 +88,7 @@ class OpenAIServiceTest extends TestCase {
         $openAIService = $this->setUpOpenAIService();
         
         // Create a thread with the first question
-        $threadId = $openAIService->createThreadedAssistant('¿Cuál es la capital de España?');
+        $threadId = $openAIService->createConversationThread('¿Cuál es la capital de España?');
         $this->assertNotEmpty($threadId, 'Thread ID should not be empty');
 
         // Ask a follow-up question in the same thread

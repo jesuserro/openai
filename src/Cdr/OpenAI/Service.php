@@ -41,7 +41,7 @@ class Service {
         return $responseData['choices'][0]['message']['content'];
     }
 
-    public function createThreadedAssistant(string $userMessage): string {
+    public function createConversationThread(string $userMessage): string {
         $data = $this->buildRequestData('user', $userMessage);
         $response = $this->curlClient->post($data);
 
