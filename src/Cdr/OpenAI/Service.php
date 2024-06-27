@@ -4,6 +4,7 @@ namespace Cdr\OpenAI;
 
 use Cdr\Questions\QuestionInterface;
 use Cdr\Utils\CurlClient;
+use Cdr\Utils\JsonResponseHandler;
 
 class Service {
     private readonly ClientInterface $client;
@@ -28,7 +29,7 @@ class Service {
         $headers = $assistantId ? ['OpenAI-Thread-Id' => $assistantId] : [];
         $response = $this->curlClient->post($data, $headers);
         
-        $responseData = $this->handleApiResponse($response);
+        $responseData = JsonResponseHandler::handle($response);
         return $responseData['choices'][0]['message']['content'];
     }
 
@@ -36,7 +37,7 @@ class Service {
         $data = $this->buildRequestData('user', $userMessage);
         $response = $this->curlClient->post($data);
 
-        $responseData = $this->handleApiResponse($response);
+        $responseData = JsonResponseHandler::handle($response);
         return $responseData['id'];
     }
 
@@ -56,16 +57,4 @@ class Service {
         ];
     }
 
-    private function handleApiResponse(string $response): array {
-        $responseData = json_decode($response, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \RuntimeException('Failed to decode JSON response: ' . json_last_error_msg() . ' Response: ' . $response);
-        }
-
-        if (!isset($responseData['choices'][0]['message']['content']) && !isset($responseData['id'])) {
-            throw new \RuntimeException('Unexpected response structure: ' . $response);
-        }
-
-        return $responseData;
-    }
 }
