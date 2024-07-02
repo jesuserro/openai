@@ -35,16 +35,20 @@ class Tarea
             ]
         ];
 
+        // Mezclar las prioridades de manera aleatoria
+        $prioridades = ['Alta', 'Media', 'Baja'];
+        shuffle($prioridades);
+        
+        foreach ($tareas as $index => $tarea) {
+            $tareas[$index]['prioridad'] = $prioridades[$index];
+        }
+
         return [
             'result' => [
                 'success' => true,
                 'data' => array_slice($tareas, $start ?? 0, $limit ?? count($tareas)),
                 'total' => count($tareas),
-                'totalesPorPrioridad' => [
-                    'Alta' => 1,
-                    'Media' => 1,
-                    'Baja' => 1
-                ],
+                'totalesPorPrioridad' => array_count_values(array_column($tareas, 'prioridad')),
                 'totalEntradaInminente' => 0
             ]
         ];
