@@ -82,8 +82,13 @@ function handleThreadedQuestions(Service $service) {
  */
 function handleListaTareas(Service $service) {
     $result = $service->obtenerListaTareas([], 0, 3);
+    $tareas = $result['result']['data'];
+    
+    Output::print('Lista de Tareas: ' . PHP_EOL . json_encode($tareas, JSON_PRETTY_PRINT));
 
-    Output::print('Lista de Tareas: ' . PHP_EOL . json_encode($result['result']['data'], JSON_PRETTY_PRINT));
-    Output::print('Resumen de IA: ' . PHP_EOL . $result['result']['resumen']);
+    // Generar el resumen de IA
+    $resumen = $service->obtenerResumenTareas($tareas);
+
+    Output::print('Resumen de IA: ' . PHP_EOL . $resumen);
     Output::print('---');
 }

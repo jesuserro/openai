@@ -106,13 +106,36 @@ class OpenAIServiceTest extends TestCase {
         $this->assertTrue($result['result']['success']);
         $this->assertCount(3, $result['result']['data']);
         $this->assertEquals(3, $result['result']['total']);
-        $this->assertArrayHasKey('resumen', $result['result']);
-        $this->assertNotEmpty($result['result']['resumen'], 'El resumen no debería estar vacío');
+    }
 
-        // Verificar si la IA ha identificado correctamente la tarea más urgente
-        $tareaMasUrgenteEsperada = array_filter($result['result']['data'], fn($tarea) => $tarea['prioridad'] === 'Alta');
-        $tareaMasUrgenteDescripcion = reset($tareaMasUrgenteEsperada)['descripcion'];
+    public function testObtenerResumenTareas()
+    {
+        $openAIService = $this->setUpOpenAIService();
 
-        $this->assertStringContainsString($tareaMasUrgenteDescripcion, $result['result']['resumen'], 'La IA debería identificar correctamente la tarea más urgente.');
+        $tareas = [
+            [
+                'id' => 1,
+                'nombre' => 'Tarea 1',
+                'descripcion' => 'Descripción de la tarea 1',
+                'prioridad' => 'Alta'
+            ],
+            [
+                'id' => 2,
+                'nombre' => 'Tarea 2',
+                'descripcion' => 'Descripción de la tarea 2',
+                'prioridad' => 'Media'
+            ],
+            [
+                'id' => 3,
+                'nombre' => 'Tarea 3',
+                'descripcion' => 'Descripción de la tarea 3',
+                'prioridad' => 'Baja'
+            ]
+        ];
+
+        $resumen = $openAIService->obtenerResumenTareas($tareas);
+
+        $this->assertNotEmpty($resumen, 'El resumen no debería estar vacío');
+        $this->assertStringContainsString('Descripción de la tarea 1', $resumen, 'La IA debería identificar correctamente la tarea más urgente.');
     }
 }

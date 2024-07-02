@@ -70,15 +70,12 @@ class Service {
 
     public function obtenerListaTareas(array $datos, ?int $start = null, ?int $limit = null): array
     {
-        $result = $this->tarea->listaTareas($datos, $start, $limit);
-        
-        // Generar un resumen de las tareas utilizando OpenAI
-        $resumen = $this->generarResumenTareas($result['result']['data']);
+        return $this->tarea->listaTareas($datos, $start, $limit);
+    }
 
-        // Añadir el resumen al resultado
-        $result['result']['resumen'] = $resumen;
-
-        return $result;
+    public function obtenerResumenTareas(array $tareas): string
+    {
+        return $this->generarResumenTareas($tareas);
     }
 
     private function generarResumenTareas(array $tareas): string
