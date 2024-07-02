@@ -102,7 +102,7 @@ class OpenAIServiceTest extends TestCase {
         $this->assertStringContainsString('Madrid', $secondResponse, 'La respuesta debería contener \'Madrid\'.');
     }
 
-    public function testObtenerResumenTareas()
+    public function testGenerarResumenTareas()
     {
         $openAIService = $this->setUpOpenAIService();
 
@@ -115,7 +115,7 @@ class OpenAIServiceTest extends TestCase {
         $tareaMasUrgenteDescripcion = reset($tareaMasUrgente)['descripcion'];
 
         // Obtener el resumen de IA
-        $resumen = $openAIService->obtenerResumenTareas($tareas);
+        $resumen = $openAIService->generarResumenTareas($tareas);
 
         $this->assertNotEmpty($resumen, 'El resumen no debería estar vacío');
         $this->assertStringContainsString($tareaMasUrgenteDescripcion, $resumen, 'La IA debería identificar correctamente la tarea más urgente.');

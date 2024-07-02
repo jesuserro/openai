@@ -89,7 +89,7 @@ function handleListaTareas(Service $service) {
     Output::print('Lista de Tareas: ' . PHP_EOL . json_encode($tareas, JSON_PRETTY_PRINT));
 
     // Generar el resumen de IA
-    $resumen = $service->obtenerResumenTareas($tareas);
+    $resumen = $service->generarResumenTareas($tareas);
 
     Output::print('Resumen de IA: ' . PHP_EOL . $resumen);
     Output::print('---');

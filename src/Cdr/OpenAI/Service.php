@@ -68,12 +68,7 @@ class Service {
         ];
     }
 
-    public function obtenerResumenTareas(array $tareas): string
-    {
-        return $this->generarResumenTareas($tareas);
-    }
-
-    private function generarResumenTareas(array $tareas): string
+    public function generarResumenTareas(array $tareas): string
     {
         $tareasTexto = array_map(function($tarea) {
             return "ID: {$tarea['id']}, Nombre: {$tarea['nombre']}, Descripción: {$tarea['descripcion']}, Prioridad: {$tarea['prioridad']}";
