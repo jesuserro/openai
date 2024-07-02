@@ -5,14 +5,17 @@ namespace Cdr\OpenAI;
 use Cdr\Questions\QuestionInterface;
 use Cdr\Utils\CurlClient;
 use Cdr\Utils\JsonResponseHandler;
+use Cdr\Tarea;
 
 class Service {
     private readonly ClientInterface $client;
     private readonly CurlClient $curlClient;
+    private readonly Tarea $tarea;
 
     public function __construct(ClientInterface $client, CurlClient $curlClient) {
         $this->client = $client;
         $this->curlClient = $curlClient;
+        $this->tarea = new Tarea();
     }
 
     public function askQuestion(QuestionInterface $question): string {
@@ -63,5 +66,13 @@ class Service {
             'presence_penalty' => 0,
             'frequency_penalty' => 0,
         ];
+    }
+
+    public function obtenerListaTareas($datos, $start = null, $limit = null)
+    {
+        $result = $this->tarea->listaTareas($datos, $start, $limit);
+        // Aquí puedes hacer alguna acción interesante con el resultado
+        // Por ejemplo, procesar los datos y devolver algún análisis
+        return $result;
     }
 }

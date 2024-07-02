@@ -1,0 +1,64 @@
+openapi: 3.0.1
+info:
+  title: Tareas API
+  description: API para gestionar tareas
+  version: 1.0.0
+paths:
+  /tareas:
+    get:
+      summary: Lista de tareas
+      parameters:
+        - name: datos
+          in: query
+          required: false
+          schema:
+            type: object
+        - name: start
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de tareas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      success:
+                        type: boolean
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            nombre:
+                              type: string
+                            descripcion:
+                              type: string
+                            prioridad:
+                              type: string
+                      total:
+                        type: integer
+                      totalesPorPrioridad:
+                        type: object
+                        properties:
+                          Alta:
+                            type: integer
+                          Media:
+                            type: integer
+                          Baja:
+                            type: integer
+                      totalEntradaInminente:
+                        type: integer

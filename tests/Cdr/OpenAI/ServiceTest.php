@@ -96,4 +96,15 @@ class OpenAIServiceTest extends TestCase {
         
         $this->assertStringContainsString('Madrid', $secondResponse, 'La respuesta debería contener \'Madrid\'.');
     }
+
+    public function testObtenerListaTareas()
+    {
+        $openAIService = $this->setUpOpenAIService();
+        
+        $result = $openAIService->obtenerListaTareas([], 0, 3);
+
+        $this->assertTrue($result['result']['success']);
+        $this->assertCount(3, $result['result']['data']);
+        $this->assertEquals(3, $result['result']['total']);
+    }
 }
