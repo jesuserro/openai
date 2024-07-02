@@ -6,6 +6,7 @@ use Cdr\Utils\CurlClient;
 use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
 use PHPUnit\Framework\TestCase;
+use Cdr\Tarea;
 
 class OpenAIServiceTest extends TestCase {
     private $assistantId;
@@ -112,30 +113,20 @@ class OpenAIServiceTest extends TestCase {
     {
         $openAIService = $this->setUpOpenAIService();
 
-        $tareas = [
-            [
-                'id' => 1,
-                'nombre' => 'Tarea 1',
-                'descripcion' => 'Descripción de la tarea 1',
-                'prioridad' => 'Alta'
-            ],
-            [
-                'id' => 2,
-                'nombre' => 'Tarea 2',
-                'descripcion' => 'Descripción de la tarea 2',
-                'prioridad' => 'Media'
-            ],
-            [
-                'id' => 3,
-                'nombre' => 'Tarea 3',
-                'descripcion' => 'Descripción de la tarea 3',
-                'prioridad' => 'Baja'
-            ]
-        ];
+        // Obtener las tareas utilizando el método listaTareas
+        $tareaService = new Tarea();
+        $result = $tareaService->listaTareas([], 0, 3);
+        $tareas = $result['result']['data'];
 
+        // Encontrar la tarea con prioridad 'Alta'
+        $tareaMasUrgente = array_filter($tareas, fn($tarea) => $tarea['prioridad'] === 'Alta');
+        $tareaMasUrgenteDescripcion = reset($tareaMasUrgente)['descripcion'];
+
+        // Obtener el resumen de IA
         $resumen = $openAIService->obtenerResumenTareas($tareas);
 
         $this->assertNotEmpty($resumen, 'El resumen no debería estar vacío');
-        $this->assertStringContainsString('Descripción de la tarea 1', $resumen, 'La IA debería identificar correctamente la tarea más urgente.');
+        $this->assertStringContainsString($tareaMasUrgenteDescripcion, $resumen, 'La IA debería identificar correctamente la tarea más urgente.');
     }
+
 }
