@@ -12,7 +12,7 @@ class Tarea
      * @param int|null $limit
      * @return array
      */
-    public function listaTareas($datos, $start = null, $limit = null)
+    public function listaTareas(array $datos, ?int $start = null, ?int $limit = null): array
     {
         $tareas = [
             [
@@ -38,7 +38,7 @@ class Tarea
         return [
             'result' => [
                 'success' => true,
-                'data' => array_slice($tareas, $start, $limit),
+                'data' => array_slice($tareas, $start ?? 0, $limit ?? count($tareas)),
                 'total' => count($tareas),
                 'totalesPorPrioridad' => [
                     'Alta' => 1,
