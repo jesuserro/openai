@@ -68,11 +68,29 @@ class Service {
         ];
     }
 
-    public function obtenerListaTareas($datos, $start = null, $limit = null)
+    public function obtenerListaTareas(array $datos, ?int $start = null, ?int $limit = null): array
     {
         $result = $this->tarea->listaTareas($datos, $start, $limit);
-        // Aquí puedes hacer alguna acción interesante con el resultado
-        // Por ejemplo, procesar los datos y devolver algún análisis
+        
+        // Generar un resumen de las tareas utilizando OpenAI
+        $resumen = $this->generarResumenTareas($result['result']['data']);
+
+        // Añadir el resumen al resultado
+        $result['result']['resumen'] = $resumen;
+
         return $result;
+    }
+
+    private function generarResumenTareas(array $tareas): string
+    {
+        $descripciones = array_map(fn($tarea) => $tarea['descripcion'], $tareas);
+        $prompt = "Genera un resumen de las siguientes tareas:\n" . implode("\n", $descripciones);
+
+        $data = $this->buildRequestData('user', $prompt);
+
+        $response = $this->curlClient->post($data);
+
+        $responseData = JsonResponseHandler::handle($response);
+        return $responseData['choices'][0]['message']['content'] ?? 'No se pudo generar el resumen.';
     }
 }

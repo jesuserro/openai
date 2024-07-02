@@ -32,6 +32,9 @@ try {
     // Ejemplo 3: Preguntas encadenadas con createConversationThread y sendMessage
     handleThreadedQuestions($service);
 
+    // Ejemplo 4: Obtener lista de tareas y mostrar el resumen
+    handleListaTareas($service);
+
 } catch (\Exception $e) {
     Output::print('Error: ' . $e->getMessage());
 }
@@ -71,5 +74,16 @@ function handleThreadedQuestions(Service $service) {
     // Ask a follow-up question in the same thread
     $secondResponse = $service->sendMessage('¿Qué es conocido por ser el centro cultural de España?', $threadId);
     Output::print('Respuesta del hilo a segunda pregunta: ' . PHP_EOL . $secondResponse);
+    Output::print('---');
+}
+
+/**
+ * Handle the listaTareas example
+ */
+function handleListaTareas(Service $service) {
+    $result = $service->obtenerListaTareas([], 0, 3);
+
+    Output::print('Lista de Tareas: ' . PHP_EOL . json_encode($result['result']['data'], JSON_PRETTY_PRINT));
+    Output::print('Resumen de IA: ' . PHP_EOL . $result['result']['resumen']);
     Output::print('---');
 }

@@ -106,5 +106,7 @@ class OpenAIServiceTest extends TestCase {
         $this->assertTrue($result['result']['success']);
         $this->assertCount(3, $result['result']['data']);
         $this->assertEquals(3, $result['result']['total']);
+        $this->assertArrayHasKey('resumen', $result['result']);
+        $this->assertNotEmpty($result['result']['resumen'], 'El resumen no debería estar vacío');
     }
 }
