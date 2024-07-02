@@ -108,5 +108,11 @@ class OpenAIServiceTest extends TestCase {
         $this->assertEquals(3, $result['result']['total']);
         $this->assertArrayHasKey('resumen', $result['result']);
         $this->assertNotEmpty($result['result']['resumen'], 'El resumen no debería estar vacío');
+
+        // Verificar si la IA ha identificado correctamente la tarea más urgente
+        $tareaMasUrgenteEsperada = array_filter($result['result']['data'], fn($tarea) => $tarea['prioridad'] === 'Alta');
+        $tareaMasUrgenteDescripcion = reset($tareaMasUrgenteEsperada)['descripcion'];
+
+        $this->assertStringContainsString($tareaMasUrgenteDescripcion, $result['result']['resumen'], 'La IA debería identificar correctamente la tarea más urgente.');
     }
 }

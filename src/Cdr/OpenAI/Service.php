@@ -83,14 +83,11 @@ class Service {
 
     private function generarResumenTareas(array $tareas): string
     {
-        $descripciones = array_map(fn($tarea) => $tarea['descripcion'], $tareas);
-        $prompt = "Genera un resumen de las siguientes tareas y determina cuál es la más urgente (prioridad 'Alta'):\n" . implode("\n", $descripciones);
+        $tareasTexto = array_map(function($tarea) {
+            return "ID: {$tarea['id']}, Nombre: {$tarea['nombre']}, Descripción: {$tarea['descripcion']}, Prioridad: {$tarea['prioridad']}";
+        }, $tareas);
 
-        // Identificar la tarea más urgente
-        $tareaMasUrgente = array_filter($tareas, fn($tarea) => $tarea['prioridad'] === 'Alta');
-        $tareaMasUrgenteDescripcion = reset($tareaMasUrgente)['descripcion'];
-
-        $prompt .= "\n\nLa tarea más urgente es: " . $tareaMasUrgenteDescripcion;
+        $prompt = "Aquí hay una lista de tareas. Por favor, genera un resumen y determina cuál de estas tareas es la más urgente (tarea con prioridad 'Alta'):\n\n" . implode("\n", $tareasTexto);
 
         $data = $this->buildRequestData('user', $prompt);
 
