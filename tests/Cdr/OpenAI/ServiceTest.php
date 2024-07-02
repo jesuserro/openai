@@ -11,6 +11,7 @@ use Cdr\Tarea;
 class OpenAIServiceTest extends TestCase {
     private $assistantId;
     private $apiKey;
+    private $tareaService;
 
     public function setUp(): void
     {
@@ -28,6 +29,9 @@ class OpenAIServiceTest extends TestCase {
         if (!$this->apiKey) {
             $this->fail('API Key no configurada. Asegúrate de que la variable de entorno OPENAI_API_KEY está establecida.');
         }
+
+        // Instanciar Tarea
+        $this->tareaService = new Tarea();
     }
 
     public function setUpOpenAIService(): Service {
@@ -114,8 +118,7 @@ class OpenAIServiceTest extends TestCase {
         $openAIService = $this->setUpOpenAIService();
 
         // Obtener las tareas utilizando el método listaTareas
-        $tareaService = new Tarea();
-        $result = $tareaService->listaTareas([], 0, 3);
+        $result = $this->tareaService->listaTareas([], 0, 3);
         $tareas = $result['result']['data'];
 
         // Encontrar la tarea con prioridad 'Alta'
@@ -128,5 +131,4 @@ class OpenAIServiceTest extends TestCase {
         $this->assertNotEmpty($resumen, 'El resumen no debería estar vacío');
         $this->assertStringContainsString($tareaMasUrgenteDescripcion, $resumen, 'La IA debería identificar correctamente la tarea más urgente.');
     }
-
 }
