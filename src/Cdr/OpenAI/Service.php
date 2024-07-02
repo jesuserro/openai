@@ -68,11 +68,6 @@ class Service {
         ];
     }
 
-    public function obtenerListaTareas(array $datos, ?int $start = null, ?int $limit = null): array
-    {
-        return $this->tarea->listaTareas($datos, $start, $limit);
-    }
-
     public function obtenerResumenTareas(array $tareas): string
     {
         return $this->generarResumenTareas($tareas);

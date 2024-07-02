@@ -8,6 +8,7 @@ use Cdr\Utils\CurlClient;
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
 use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
 use Cdr\Utils\Output;
+use Cdr\Tarea;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -81,7 +82,8 @@ function handleThreadedQuestions(Service $service) {
  * Handle the listaTareas example
  */
 function handleListaTareas(Service $service) {
-    $result = $service->obtenerListaTareas([], 0, 3);
+    $tareaService = new Tarea();
+    $result = $tareaService->listaTareas([], 0, 3);
     $tareas = $result['result']['data'];
     
     Output::print('Lista de Tareas: ' . PHP_EOL . json_encode($tareas, JSON_PRETTY_PRINT));
