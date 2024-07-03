@@ -1,4 +1,5 @@
 <?php
+namespace Tests\Cdr;
 
 use PHPUnit\Framework\TestCase;
 use Cdr\Tarea;

@@ -1,4 +1,5 @@
 <?php
+namespace Tests\Cdr\OpenAI;
 
 use Cdr\OpenAI\Service;
 use Cdr\OpenAI\ClientWrapper;
@@ -16,7 +17,7 @@ class OpenAIServiceTest extends TestCase {
     public function setUp(): void
     {
         // Cargar variables de entorno desde el archivo .env.test
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../', '.env.test');
+        $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../', '.env.test');
         $dotenv->load();
 
         $this->assistantId = $_ENV['OPENAI_ASSISTANT_ID'];
