@@ -64,7 +64,7 @@ class OpenAIServiceTest extends TestCase {
         $openAIService = $this->setUpOpenAIService();
         
         // Expected response structure for the test
-        $expectedResponse = ['id' => $this->assistantId, 'name' => 'NgesTest-Jesús'];
+        $expectedResponse = ['id' => $this->assistantId, 'name' => 'PruebasJesús'];
 
         // Make the API call
         $response = $openAIService->getAssistant($this->assistantId);
