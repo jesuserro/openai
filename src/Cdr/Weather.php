@@ -4,7 +4,7 @@ namespace Cdr;
 
 use Cdr\Utils\CurlClient;
 
-class WeatherService {
+class Weather {
     private readonly CurlClient $curlClient;
     private readonly string $apiKey;
 

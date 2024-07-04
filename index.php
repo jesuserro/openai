@@ -5,7 +5,7 @@ require_once 'vendor/autoload.php';
 use Cdr\OpenAI\Service;
 use Cdr\OpenAI\ClientWrapper;
 use Cdr\Utils\CurlClient;
-use Cdr\WeatherService;
+use Cdr\Weather;
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
 use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
 use Cdr\Utils\Output;
@@ -26,7 +26,7 @@ try {
     $curlClient = new CurlClient('https://api.openai.com/v1/chat/completions', $apiKey);
     $service = new Service($client, $curlClient);
     $curlClientWheater = new CurlClient('http://api.openweathermap.org/data/2.5/weather', $weatherApiKey);
-    $weatherService = new WeatherService($curlClientWheater, $weatherApiKey);
+    $weatherService = new Weather($curlClientWheater, $weatherApiKey);
 
     // Ejemplo 1: Pregunta simple con askQuestion
     handleAskQuestion($service);
@@ -105,7 +105,7 @@ function handleListaTareas(Service $service) {
 /**
  * Handle the weather in Zaragoza example
  */
-function handleWeatherInZaragoza(WeatherService $weatherService) {
+function handleWeatherInZaragoza(Weather $weatherService) {
     $weather = $weatherService->getWeatherInCity('Zaragoza, Spain');
     Output::print('El clima en Zaragoza: ' . PHP_EOL . $weather);
     Output::print('---');
