@@ -5,6 +5,7 @@ require_once 'vendor/autoload.php';
 use Cdr\OpenAI\Service;
 use Cdr\OpenAI\ClientWrapper;
 use Cdr\Utils\CurlClient;
+use Cdr\WeatherService;
 use Cdr\Questions\Questions\PaymentMethodsInCentraldereservasQuestion;
 use Cdr\Questions\Questions\CapitalDeEspañaQuestion;
 use Cdr\Utils\Output;
@@ -15,14 +16,17 @@ $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 $apiKey = $_ENV['OPENAI_API_KEY'];
-if (!$apiKey) {
-    exit("API Key no configurada. Asegúrate de que la variable de entorno OPENAI_API_KEY está establecida.\n");
+$weatherApiKey = $_ENV['WEATHER_API_KEY'];
+if (!$apiKey || !$weatherApiKey) {
+    exit("API Key no configurada. Asegúrate de que las variables de entorno OPENAI_API_KEY y WEATHER_API_KEY están establecidas.\n");
 }
 
 try {
     $client = new ClientWrapper($apiKey);
     $curlClient = new CurlClient('https://api.openai.com/v1/chat/completions', $apiKey);
     $service = new Service($client, $curlClient);
+    $curlClientWheater = new CurlClient('http://api.openweathermap.org/data/2.5/weather', $weatherApiKey);
+    $weatherService = new WeatherService($curlClientWheater, $weatherApiKey);
 
     // Ejemplo 1: Pregunta simple con askQuestion
     handleAskQuestion($service);
@@ -37,7 +41,7 @@ try {
     handleListaTareas($service);
 
     // Ejemplo 5: Obtener el clima en Zaragoza
-    handleWeatherInZaragoza($service);
+    handleWeatherInZaragoza($weatherService);
 
 } catch (\Exception $e) {
     Output::print('Error: ' . $e->getMessage());
@@ -101,8 +105,8 @@ function handleListaTareas(Service $service) {
 /**
  * Handle the weather in Zaragoza example
  */
-function handleWeatherInZaragoza(Service $service) {
-    $weather = $service->getWeatherInCity('Zaragoza, Spain');
+function handleWeatherInZaragoza(WeatherService $weatherService) {
+    $weather = $weatherService->getWeatherInCity('Zaragoza, Spain');
     Output::print('El clima en Zaragoza: ' . PHP_EOL . $weather);
     Output::print('---');
 }
