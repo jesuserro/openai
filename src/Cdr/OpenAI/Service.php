@@ -5,17 +5,14 @@ namespace Cdr\OpenAI;
 use Cdr\Questions\QuestionInterface;
 use Cdr\Utils\CurlClient;
 use Cdr\Utils\JsonResponseHandler;
-use Cdr\Tarea;
 
 class Service {
     private readonly ClientInterface $client;
     private readonly CurlClient $curlClient;
-    private readonly Tarea $tarea;
 
     public function __construct(ClientInterface $client, CurlClient $curlClient) {
         $this->client = $client;
         $this->curlClient = $curlClient;
-        $this->tarea = new Tarea();
     }
 
     public function askQuestion(QuestionInterface $question): string {
