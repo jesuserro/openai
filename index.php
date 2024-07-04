@@ -36,6 +36,9 @@ try {
     // Ejemplo 4: Obtener lista de tareas y mostrar el resumen
     handleListaTareas($service);
 
+    // Ejemplo 5: Obtener el clima en Zaragoza
+    handleWeatherInZaragoza($service);
+
 } catch (\Exception $e) {
     Output::print('Error: ' . $e->getMessage());
 }
@@ -92,5 +95,14 @@ function handleListaTareas(Service $service) {
     $resumen = $service->generarResumenTareas($tareas);
 
     Output::print('Resumen de IA: ' . PHP_EOL . $resumen);
+    Output::print('---');
+}
+
+/**
+ * Handle the weather in Zaragoza example
+ */
+function handleWeatherInZaragoza(Service $service) {
+    $weather = $service->getWeatherInCity('Zaragoza, Spain');
+    Output::print('El clima en Zaragoza: ' . PHP_EOL . $weather);
     Output::print('---');
 }
